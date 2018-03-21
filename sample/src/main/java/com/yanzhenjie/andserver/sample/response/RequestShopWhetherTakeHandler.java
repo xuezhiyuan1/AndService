@@ -42,6 +42,11 @@ public class RequestShopWhetherTakeHandler implements RequestHandler {
             InputStream in = new BufferedInputStream(new FileInputStream(Environment.getExternalStorageDirectory()+"/Vendor/Config"+"/config.properties"));
             prop.load(in);
             String port = prop.getProperty(machineid);
+            if("com3".equals(port)){
+                port = "/dev/ttymxc3";
+            }else if("com4".equals(port)) {
+                port = "/dev/ttymxc4";
+            }
             serialUtilOld = new SerialUtilOld(port,19200,0);
             JSONObject json = new JSONObject();
             serialUtilOld.setData(ParamsSettingUtil.SEND_DATA_SHOP_STATE);

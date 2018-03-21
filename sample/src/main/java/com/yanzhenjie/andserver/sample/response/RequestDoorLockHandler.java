@@ -4,6 +4,7 @@ import android.os.Environment;
 
 import com.yanzhenjie.andserver.RequestHandler;
 import com.yanzhenjie.andserver.sample.ParamsSettingUtil;
+import com.yanzhenjie.andserver.sample.util.PropertiesUtils;
 import com.yanzhenjie.andserver.util.HttpRequestParser;
 
 import org.apache.http.HttpException;
@@ -32,16 +33,20 @@ public class RequestDoorLockHandler implements RequestHandler {
 
     private SerialUtilOld serialUtilOld;
     //String shipmentStatus;
+    private String port;
 
     @Override
     public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
         try {
             Map<String, String> params = HttpRequestParser.parse(request);
             String machineid = URLDecoder.decode(params.get("machineId"), "utf-8");
-            Properties prop = new Properties();
-            InputStream in = new BufferedInputStream(new FileInputStream(Environment.getExternalStorageDirectory()+"/Vendor/Config"+"/config.properties"));
-            prop.load(in);
-            String port = prop.getProperty(machineid);
+            Properties prop = PropertiesUtils.propertiesUtils().properties(Environment.getExternalStorageDirectory() + "/Vendor/Config" + "/config.properties");
+            port = prop.getProperty(machineid);
+            if("com3".equals(port)){
+                port = "/dev/ttymxc3";
+            }else if("com4".equals(port)) {
+                port = "/dev/ttymxc4";
+            }
             serialUtilOld = new SerialUtilOld(port,19200,0);
             JSONObject json = new JSONObject();
             serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_CLOSE);

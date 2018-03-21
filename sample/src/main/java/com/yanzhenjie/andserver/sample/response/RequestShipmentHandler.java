@@ -76,6 +76,11 @@ public class RequestShipmentHandler implements RequestHandler {
             machineid = URLDecoder.decode(params.get("machineId"), "utf-8");
             Properties prop = PropertiesUtils.propertiesUtils().properties(Environment.getExternalStorageDirectory() + "/Vendor/Config" + "/config.properties");
             String port = prop.getProperty(machineid);
+            if("com3".equals(port)){
+                port = "/dev/ttymxc3";
+            }else if("com4".equals(port)) {
+                port = "/dev/ttymxc4";
+            }
             //设置串口号  波特率
             try {
                 serialUtilOld = new SerialUtilOld(port,19200,0);
@@ -163,8 +168,8 @@ public class RequestShipmentHandler implements RequestHandler {
                         isQueryShipmentStatus = false;
                     }else if ("07".equals(shipmentStatus)){
                         out.write(sd+":"+str+"----07------"+count+"\r\n");
-                        json.put("machineId",machineid);
                         json.put("options",1);
+                        json.put("machineId",machineid);
                         json.put("result","success");
                         resultData = json.toString();
                         isQueryShipmentStatus = false;
@@ -185,6 +190,9 @@ public class RequestShipmentHandler implements RequestHandler {
                     if (count == 160) {
                         //***********************************
                         json.put("options",2);
+                        json.put("machineId",machineid);
+                        json.put("Msg","出货超时");
+                        json.put("result","fail");
                         resultData = json.toString();
                         isQueryShipmentStatus = false;
                     }
