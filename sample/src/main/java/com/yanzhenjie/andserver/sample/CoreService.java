@@ -29,6 +29,7 @@ import com.yanzhenjie.andserver.sample.response.RequestDriverMotorStateHandler;
 import com.yanzhenjie.andserver.sample.response.RequestFrontMotorHomingHandler;
 import com.yanzhenjie.andserver.sample.response.RequestMachineStateHandler;
 import com.yanzhenjie.andserver.sample.response.RequestOpenDoorHandler;
+import com.yanzhenjie.andserver.sample.response.RequestPrintStringTextHandler;
 import com.yanzhenjie.andserver.sample.response.RequestRearMotorHomingHandler;
 import com.yanzhenjie.andserver.sample.response.RequestResetLocationHandler;
 import com.yanzhenjie.andserver.sample.response.RequestShipMentStateHandler;
@@ -97,6 +98,8 @@ public class CoreService extends Service {
                 .registerHandler("/SaleMachineWebService/DoorCloseState",new RequestDoorLockHandler())
                 //开门
                 .registerHandler("/SaleMachineWebService/DoorOpenState",new RequestOpenDoorHandler())
+                //打印
+                .registerHandler("/SaleMachineWebService/PrintStringText",new RequestPrintStringTextHandler())
                 .listener(mListener)
                 .build();
         // Create server.
