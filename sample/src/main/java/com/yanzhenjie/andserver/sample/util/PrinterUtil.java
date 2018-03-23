@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *   Created by Administrator on 2018/2/7.
@@ -99,14 +100,15 @@ public class PrinterUtil {
 
     /**
      * 测试打印，有一定的格式
-     * @param strTitle
+     * @param data 数据集合
+     * @param align 对齐方式
      */
-    public void printTest(String strTitle) {
+    public void printTest(List<String> data,int align) {
         if (comA.isOpen()) {
             //初始化打印机
             comA.send(PrinterASCII.SetInitPrintMachine());
             //如果内容此行没有填满，        0:左对齐;1:水平居中;2:右对齐
-            comA.send(PrinterASCII.SetAlignment(0));
+            comA.send(PrinterASCII.SetAlignment(align));
             comA.send(PrinterASCII.SetGoChineseMode());
             //字间距
             comA.send(PrinterASCII.SetWordSpacing(1));
@@ -114,32 +116,35 @@ public class PrinterUtil {
             comA.send(PrinterASCII.SetRowSpacing(5));
             //字体大小
             comA.send(PrinterASCII.SetPrintDirection(1));
-            String str = strTitle;
-            StringBuffer sb = new StringBuffer(str);
-            int number = 15;
-            for(int i = 0;i<sb.length();i++){
-                if((i+1)*number > sb.length()){
-                    int line = sb.length();
-                    String sub = sb.substring(i*number,line);
-                    comA.send(PrinterASCII.PrintString(sub,0));
-                    int length = sub.length();
-                    String substring_Str = sb.substring(0, sb.length() - length);
-                    //再次倒叙
-                    for(int j=0;j<substring_Str.length();j++){
-                        if((j+1)*number > substring_Str.length()){
-                            int line_d = substring_Str.length();
-                            String sub_d = substring_Str.substring(0,line_d - j*number);
-                            comA.send(PrinterASCII.PrintString(sub_d,0));
-                            break;
-                        }else{
-                            String substring_d = substring_Str.substring(substring_Str.length() - number * (j + 1), substring_Str.length() - j * number);
-                            comA.send(PrinterASCII.PrintString(substring_d,0));
+
+            for(int m= 0;m<data.size();m++){
+                String str = data.get(m);
+                StringBuffer sb = new StringBuffer(str);
+                int number = 15;
+                for(int i = 0;i<sb.length();i++){
+                    if((i+1)*number > sb.length()){
+                        int line = sb.length();
+                        String sub = sb.substring(i*number,line);
+                        comA.send(PrinterASCII.PrintString(sub,0));
+                        int length = sub.length();
+                        String substring_Str = sb.substring(0, sb.length() - length);
+                        //再次倒叙
+                        for(int j=0;j<substring_Str.length();j++){
+                            if((j+1)*number > substring_Str.length()){
+                                int line_d = substring_Str.length();
+                                String sub_d = substring_Str.substring(0,line_d - j*number);
+                                comA.send(PrinterASCII.PrintString(sub_d,0));
+                                break;
+                            }else{
+                                String substring_d = substring_Str.substring(substring_Str.length() - number * (j + 1), substring_Str.length() - j * number);
+                                comA.send(PrinterASCII.PrintString(substring_d,0));
+                            }
                         }
+                        break;
+                    }else{
+                        String string = sb.substring(i*number,(i+1)*number);
+                        Log.d("s",string);
                     }
-                    break;
-                }else{
-                    String string = sb.substring(i*number,(i+1)*number);
-                    Log.d("s",string);
                 }
             }
             comA.send(PrinterASCII.SetCancelChineseMode());

@@ -36,7 +36,6 @@ import android_serialport_api.SerialUtilOld;
  * 出货接口
  * Created by Administrator on 2017/10/25.
  */
-
 public class RequestShipmentHandler implements RequestHandler {
     private SerialUtilOld serialUtilOld;
     private int deliverySpeed = 2000;
