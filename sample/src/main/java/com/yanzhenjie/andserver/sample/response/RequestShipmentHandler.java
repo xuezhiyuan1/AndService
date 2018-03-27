@@ -183,9 +183,10 @@ public class RequestShipmentHandler implements RequestHandler {
                         json.put("options", 3);
                         resultData = json.toString();
                         isQueryShipmentStatus = false;
-                    }else if(count2 == 18){
-                        serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_OPEN);
                     }
+                    /*}else if(count2 == 18){
+                        serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_OPEN);
+                    }*/
                     if (count == 160) {
                         //***********************************
                         json.put("options",2);
@@ -204,8 +205,8 @@ public class RequestShipmentHandler implements RequestHandler {
             out.close(); // 最后记得关闭文件
 
             try {
-                Thread.sleep(10000);
-                serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_CLOSE);
+                //Thread.sleep(10000);
+                //serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_CLOSE);
                 StringEntity stringEntity = new StringEntity(resultData, "UTF-8");
                 response.setEntity(stringEntity);
             } catch (Exception e) {

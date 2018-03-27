@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity  {
         mService = new Intent(this, CoreService.class);
         mReceiver = new ServerStatusReceiver(this);
         mReceiver.register();
-        //  开启服务
+        //开启服务
         showDialog();
         startService(mService);
     }

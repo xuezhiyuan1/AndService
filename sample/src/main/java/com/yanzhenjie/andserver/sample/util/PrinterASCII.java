@@ -227,7 +227,57 @@ public class PrinterASCII {
         return var1;
     }
 
-    //，清理缓存
+    //打印二维码
+    public static byte[] SetPrintTwoCode(String str){
+        String s = str2HexStr(str);
+        String [] arr2 = s.split(" ");
+        int length1 = arr2.length;
+        byte[] var0;
+        (var0 = new byte[6+length1])[0] = 0x1d;
+        var0[1] = 0x6b;
+        var0[2] = 0x20;
+        //版本
+        var0[3] = 0x01;
+        //纠错等级M
+        var0[4] = 0x02;
+        for(int i = 0;i<length1;i++){
+            String s1 = arr2[i];
+            Byte decode = Byte.decode("0x" + s1);
+            //byte b = Byte.parseByte(s1);
+            var0[i+5] = decode;
+        }
+        var0[5+length1]  = 0x00;
+        return var0;
+    }
+
+
+    //放大二维码
+    public static byte[] SetBigTwoCode(int twice){
+        byte[] var;
+        (var = new byte[3])[0] = 29;
+        var[1] = 87;
+        var[2] = (byte) twice;
+        return var;
+    }
+
+
+
+    public static String str2HexStr(String str) {
+        char[] chars = "0123456789ABCDEF".toCharArray();
+        StringBuilder sb = new StringBuilder("");
+        byte[] bs = str.getBytes();
+        int bit;
+
+        for (int i = 0; i < bs.length; i++) {
+            bit = (bs[i] & 0x0f0) >> 4;
+            sb.append(chars[bit]);
+            bit = bs[i] & 0x0f;
+            sb.append(chars[bit]);
+            sb.append(' ');
+        }
+        return sb.toString().trim();
+    }
+
 
 
 

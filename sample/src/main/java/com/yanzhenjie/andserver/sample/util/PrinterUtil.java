@@ -96,7 +96,75 @@ public class PrinterUtil {
             isOpenCom = false;
         }
     }
+    //测试剧中
+    public void printTest1(List<String> dataCargoNumber,int align,String UnitNumber,String NameOfShop,String DiscountPrice,
+                           String AmountOfBenefit,String AmountAfterDiscount,
+                           String ObviousReceipt,String pay,String makeCollections,String SalesTax,String findChange,
+                           String vip,String Integration,String tel,String Address,String time,String info){
+        //初始化
+        comA.send(PrinterASCII.SetInitPrintMachine());
+        //字间距
+        comA.send(PrinterASCII.SetWordSpacing(1));
+        //行间距
+        comA.send(PrinterASCII.SetRowSpacing(6));
 
+        printTwoCode(info);
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString(time,0));
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("-----"+"温馨提示，祝您健康"+"-----",0));
+        printTest2("本店地址："+Address,0);
+        //comA.send(PrinterASCII.SetAlignment(0));
+        //comA.send(PrinterASCII.PrintString("本店地址："+Address,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("本店电话："+tel,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("本次积分："+Integration,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("会员号："+vip,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("找零："+findChange,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("营业员："+SalesTax,0));
+        comA.send(PrinterASCII.PrintString("收款："+makeCollections,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("支付："+pay,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("已收明细："+ObviousReceipt,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("折后金额："+AmountAfterDiscount,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("优惠金额："+AmountOfBenefit,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("折前金额："+DiscountPrice,0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("----------------------------",0));
+
+
+
+        printTest(dataCargoNumber, align);
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("----------------------------",0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("单价"+"       "+"数量"+"       "+"金额",0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("单位"+"       "+"批号"+"       "+"厂家",0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("货号"+"       "+"品名"+"       "+"规格",0));
+
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("单位号："+UnitNumber,0));
+        printTest2(NameOfShop,1);
+        try {
+            PrintFeedCutpaper(4);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 测试打印，有一定的格式
@@ -120,7 +188,7 @@ public class PrinterUtil {
             for(int m= 0;m<data.size();m++){
                 String str = data.get(m);
                 StringBuffer sb = new StringBuffer(str);
-                int number = 15;
+                int number = 22;
                 for(int i = 0;i<sb.length();i++){
                     if((i+1)*number > sb.length()){
                         int line = sb.length();
@@ -147,19 +215,57 @@ public class PrinterUtil {
                     }
                 }
             }
-            comA.send(PrinterASCII.SetCancelChineseMode());
-            comA.send(PrinterASCII.SetPrintFeed_n(4));
+            //comA.send(PrinterASCII.SetCancelChineseMode());
+
+           /*comA.send(PrinterASCII.SetPrintFeed_n(4));
 
             try {
                 PrintFeedCutpaper(2);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         } else {
             ToastUtil.showToast("请打开打印机！");
             return;
         }
     }
+
+
+
+    public void printTest2(String str,int align) {
+        if (comA.isOpen()) {
+            //初始化打印机
+            comA.send(PrinterASCII.SetInitPrintMachine());
+            //如果内容此行没有填满，        0:左对齐;1:水平居中;2:右对齐
+            comA.send(PrinterASCII.SetAlignment(align));
+            comA.send(PrinterASCII.SetGoChineseMode());
+            //字间距
+            comA.send(PrinterASCII.SetWordSpacing(1));
+            //行间距
+            comA.send(PrinterASCII.SetRowSpacing(5));
+            //字体大小
+            comA.send(PrinterASCII.SetPrintDirection(1));
+            StringBuffer sb = new StringBuffer(str);
+            int number = 15;
+                for(int i = 0;i<sb.length();i++){
+                    if((i+1)*number > sb.length()){
+                        int line = sb.length();
+                        String sub = sb.substring(i*number,line);
+                        comA.send(PrinterASCII.PrintString(sub,0));
+                        int length = sub.length();
+                        String substring_Str = sb.substring(0, sb.length() - length);
+                        Log.d("a",substring_Str);
+                        comA.send(PrinterASCII.PrintString(substring_Str,0));
+                        break;
+                    }else{
+                        String string = sb.substring(i*number,(i+1)*number);
+                        Log.d("a",string);
+                        //comA.send(PrinterASCII.PrintString(string,0));
+                    }
+                }
+            }
+        }
+
 
 
 
@@ -197,6 +303,13 @@ public class PrinterUtil {
         options.inSampleSize = inSampleSize;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         return options;
+    }
+
+    //打印二维码
+    public void printTwoCode(String info){
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.SetBigTwoCode(6));
+        comA.send(PrinterASCII.SetPrintTwoCode(info));
     }
 
 
