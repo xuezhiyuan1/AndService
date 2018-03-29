@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.yanzhenjie.andserver.sample.CoreService;
 import com.yanzhenjie.andserver.sample.R;
 import com.yanzhenjie.andserver.sample.ServerStatusReceiver;
+import com.yanzhenjie.andserver.sample.util.VersionUtil;
 import com.yanzhenjie.loading.dialog.LoadingDialog;
 import com.yanzhenjie.nohttp.tools.NetUtil;
 
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity  {
     private TextView mTvMessage;
 
     private LoadingDialog mDialog;
+    private int versionCode;
+    private String versionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,12 @@ public class MainActivity extends AppCompatActivity  {
         //开启服务
         showDialog();
         startService(mService);
+        try {
+            versionCode = VersionUtil.getVersionCode(MainActivity.this);
+            versionName = VersionUtil.getVersionName(MainActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -79,7 +88,8 @@ public class MainActivity extends AppCompatActivity  {
                     + "http://" + ip + ":9000/SaleMachineWebService/TestElevator\n"
                     + "http://" + ip + ":9000/SaleMachineWebService/ResetElevator\n"
                     + "http://" + ip + ":9000/SaleMachineWebService/ResetLocation\n"
-                    + "http://" + ip + ":9000/web/image/image.jpg");
+                    + "http://" + ip + ":9000/web/image/image.jpg\n"
+                    +  versionName+"_____________________"+versionCode+"_____________________");
         }
         mTvMessage.setText(message);
     }

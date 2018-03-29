@@ -38,6 +38,7 @@
             android:layout_margin="@dimen/dp_16"
             android:text="@string/server_stop_succeed"/>
 
+
     </LinearLayout>
 
 </LinearLayout>
