@@ -87,7 +87,7 @@ public class RequestShipmentHandler implements RequestHandler {
                 byte[] byte_y_behind_shop = serialUtilOld.intToBytes(y);
                 byte[] byte_x_front_shop = serialUtilOld.intToBytes(z);
                 byte[] byte_go_Shop_Sv = serialUtilOld.intToBytes(deliverySpeed);
-
+                //qian      hou      zuoyou
                 SEND_DATA_SHOP_ORDER = new byte[]{(byte) 0x7E, 0x13, 0x00,
                         (byte) 0x01,0x37,0x00,0x01,byte_x_front_shop[0],byte_x_front_shop[1],0x02,byte_y_behind_shop[0],byte_y_behind_shop[1],0x03,byte_x_behind_shop[0],byte_x_behind_shop[1],byte_go_Shop_Sv[0],byte_go_Shop_Sv[1],(byte)SheckSums,(byte) 0xED};
                 SheckSums = 0;
@@ -183,10 +183,10 @@ public class RequestShipmentHandler implements RequestHandler {
                         json.put("options", 3);
                         resultData = json.toString();
                         isQueryShipmentStatus = false;
+                    /*//为了  孟瑞  机器做适配  门锁
+                    }else if(count2 == 18){
+                        serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_OPEN);*/
                     }
-                    /*}else if(count2 == 18){
-                        serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_OPEN);
-                    }*/
                     if (count == 160) {
                         //***********************************
                         json.put("options",2);
@@ -200,19 +200,21 @@ public class RequestShipmentHandler implements RequestHandler {
                     e.getMessage();
                 }
             }
-            out.write("--------------------------------------------------------------"+"\r\n"+"\r\n"+"\r\n"+"\r\n");
-            out.flush(); // 把缓存区内容压入文件
-            out.close(); // 最后记得关闭文件
+            out.write("--------------------------关门命令已执行"+"\r\n");
 
             try {
+                //可以去掉     为了适配孟瑞   门锁  控制最新嵌入式控制
                 //Thread.sleep(10000);
-                //serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_CLOSE);
                 StringEntity stringEntity = new StringEntity(resultData, "UTF-8");
                 response.setEntity(stringEntity);
+                serialUtilOld.setData(ParamsSettingUtil.SEND_DOOR_LOCK_CLOSE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } finally {
+            out.write("--------------------------------------------------------------"+"\r\n"+"\r\n"+"\r\n"+"\r\n");
+            out.flush(); // 把缓存区内容压入文件
+            out.close(); // 最后记得关闭文件
             lock.unlock();
         }
     }

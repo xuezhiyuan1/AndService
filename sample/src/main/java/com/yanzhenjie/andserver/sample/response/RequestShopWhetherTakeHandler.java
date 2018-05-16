@@ -67,7 +67,7 @@ public class RequestShopWhetherTakeHandler implements RequestHandler {
                 json.put("Msg","货仓有货");
             }else{
                 json.put("machineId",machineid);
-                json.put("options",0);
+                json.put("options",1);
                 json.put("result","success");
                 json.put("Msg","异常");
             }

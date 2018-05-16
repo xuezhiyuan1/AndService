@@ -1,7 +1,5 @@
 package com.yanzhenjie.andserver.sample.response;
 
-import android.os.Handler;
-
 import com.yanzhenjie.andserver.RequestHandler;
 import com.yanzhenjie.andserver.sample.util.PrinterUtil;
 import com.yanzhenjie.andserver.util.HttpRequestParser;
@@ -13,19 +11,19 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Pack200;
 
 /**
- * 打印购买商品信息
- * Created by think on 2018/3/22.
+ * Created by think on 2018/5/7.
  */
 
-public class RequestPrintStringTextHandler implements RequestHandler {
+public class RequestPrintCodeTextHandler implements RequestHandler {
+
     private PrinterUtil printerInstance;
     private List<String> list;
     @Override
@@ -69,8 +67,8 @@ public class RequestPrintStringTextHandler implements RequestHandler {
             String Address = URLDecoder.decode(params.get("Address"));*/
             //现在时间
             String time = URLDecoder.decode(params.get("time"));
-            /*//二维码信息
-            String info = URLDecoder.decode(params.get("info"));*/
+            //二维码信息
+            String info = URLDecoder.decode(params.get("info"));
             String[] split = str.split("[,]");
             printerInstance = PrinterUtil.getInstance().init();
             printerInstance.OpenComPort();
@@ -81,8 +79,8 @@ public class RequestPrintStringTextHandler implements RequestHandler {
                 json.put("msg"+i,data);
             }
             //,SalesTax,findChange,vip,Integration,tel,Address,,info
-            printerInstance.printTest1(list,align,unitNumber,nameOfShop,discountPrice,amountOfBenefit,amountAfterDiscount,
-                    obviousReceipt,pay,makeCollections,time);
+            printerInstance.printTest2(list,align,unitNumber,nameOfShop,discountPrice,amountOfBenefit,amountAfterDiscount,
+                    obviousReceipt,pay,makeCollections,time,info);
             json.put("machineId",machineid);
             json.put("result","success");
             String data = json.toString();

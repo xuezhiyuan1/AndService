@@ -30,6 +30,7 @@ import com.yanzhenjie.andserver.sample.response.RequestFrontMotorHomingHandler;
 import com.yanzhenjie.andserver.sample.response.RequestLeftTemperatureController;
 import com.yanzhenjie.andserver.sample.response.RequestMachineStateHandler;
 import com.yanzhenjie.andserver.sample.response.RequestOpenDoorHandler;
+import com.yanzhenjie.andserver.sample.response.RequestPrintCodeTextHandler;
 import com.yanzhenjie.andserver.sample.response.RequestPrintStringTextHandler;
 import com.yanzhenjie.andserver.sample.response.RequestRearMotorHomingHandler;
 import com.yanzhenjie.andserver.sample.response.RequestResetLocationHandler;
@@ -104,8 +105,10 @@ public class CoreService extends Service {
                 .registerHandler("/SaleMachineWebService/PrintStringText",new RequestPrintStringTextHandler())
                 //左机柜温湿度
                 .registerHandler("/SaleMachineWebService/LeftTemperatureController",new RequestLeftTemperatureController())
-                //左机柜温湿度
+                //右机柜温湿度
                 .registerHandler("/SaleMachineWebService/RightTemperatureController",new RequestRightTemperatureController())
+                //打印二维码
+                .registerHandler("/SaleMachineWebService/RequestPrintCodeTextHandler",new RequestPrintCodeTextHandler())
                 .listener(mListener)
                 .build();
         // Create server.

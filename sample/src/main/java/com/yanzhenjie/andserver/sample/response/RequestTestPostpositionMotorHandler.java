@@ -28,6 +28,7 @@ import android_serialport_api.SerialUtilOld;
  */
 
 public class RequestTestPostpositionMotorHandler implements RequestHandler{
+
     private SerialUtilOld serialUtilOld;
     int BBB;
     private  String port;
@@ -44,8 +45,10 @@ public class RequestTestPostpositionMotorHandler implements RequestHandler{
         }else if("com4".equals(port)) {
             port = "/dev/ttymxc4";
         }
+        //后置电机水平坐标
         String xAxis = URLDecoder.decode(params.get("xAxis"), "utf-8");
         final int xLocation = Integer.parseInt(xAxis);
+        //后置电机垂直坐标
         String yAxis = URLDecoder.decode(params.get("yAxis"), "utf-8");
         final int yLocation = Integer.parseInt(yAxis);
         String data = null;
@@ -67,9 +70,9 @@ public class RequestTestPostpositionMotorHandler implements RequestHandler{
                     byte[] byte_h_behind_shop = serialUtilOld.intToBytes(xLocation);
                     //左右
                     byte[] byte_zy_behind_shop = serialUtilOld.intToBytes(yLocation);
-
+                    //先后置垂直     后左右
                     byte[] SEND_DATA_HZY_ORDER = new byte[]{(byte) 0x7E, 0x0E, 0x00,
-                            (byte) 0x01, 0x35, 0x00, 0x02, byte_h_behind_shop[0], byte_h_behind_shop[1], 0x03, byte_zy_behind_shop[0], byte_zy_behind_shop[1], (byte) 0xF0, (byte) 0xED};
+                            (byte) 0x01, 0x35, 0x00, 0x02, byte_zy_behind_shop[0], byte_zy_behind_shop[1], 0x03, byte_h_behind_shop[0], byte_h_behind_shop[1], (byte) 0xF0, (byte) 0xED};
                     BBB = 0;
                     for (int a = 0; a < 12; a++) {
                         BBB += SEND_DATA_HZY_ORDER[a];
@@ -79,7 +82,7 @@ public class RequestTestPostpositionMotorHandler implements RequestHandler{
                     int goout_Shop_Order = 0;
                     goout_Shop_Order = BBB;
                     byte[] SEND_DATA_HZY_ORDER_OK = new byte[]{(byte) 0x7E, 0x0E, 0x00,
-                            (byte) 0x01, 0x35, 0x00, 0x02, byte_h_behind_shop[0], byte_h_behind_shop[1], 0x03, byte_zy_behind_shop[0], byte_zy_behind_shop[1], (byte) goout_Shop_Order, (byte) 0xED};
+                            (byte) 0x01, 0x35, 0x00, 0x02, byte_zy_behind_shop[0], byte_zy_behind_shop[1], 0x03, byte_h_behind_shop[0], byte_h_behind_shop[1], (byte) goout_Shop_Order, (byte) 0xED};
                     serialUtilOld.setData(SEND_DATA_HZY_ORDER_OK);
                 }catch (Exception e){
                     e.getMessage();

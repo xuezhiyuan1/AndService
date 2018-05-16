@@ -99,8 +99,9 @@ public class PrinterUtil {
     //测试剧中
     public void printTest1(List<String> dataCargoNumber,int align,String UnitNumber,String NameOfShop,String DiscountPrice,
                            String AmountOfBenefit,String AmountAfterDiscount,
-                           String ObviousReceipt,String pay,String makeCollections,String SalesTax,String findChange,
-                           String vip,String Integration,String tel,String Address,String time,String info){
+                           String ObviousReceipt,String pay,String makeCollections,String time){
+        //,String SalesTax,String findChange,
+       // String vip,String Integration,String tel,String Address,  ,String info
         //初始化
         comA.send(PrinterASCII.SetInitPrintMachine());
         //字间距
@@ -108,11 +109,11 @@ public class PrinterUtil {
         //行间距
         comA.send(PrinterASCII.SetRowSpacing(6));
 
-        printTwoCode(info);
+        //printTwoCode(info);
         comA.send(PrinterASCII.SetAlignment(0));
         comA.send(PrinterASCII.PrintString(time,0));
         comA.send(PrinterASCII.SetAlignment(1));
-        comA.send(PrinterASCII.PrintString("-----"+"温馨提示，祝您健康"+"-----",0));
+        /*comA.send(PrinterASCII.PrintString("-----"+"温馨提示，祝您健康"+"-----",0));
         printTest2("本店地址："+Address,0);
         //comA.send(PrinterASCII.SetAlignment(0));
         //comA.send(PrinterASCII.PrintString("本店地址："+Address,0));
@@ -125,7 +126,7 @@ public class PrinterUtil {
         comA.send(PrinterASCII.SetAlignment(0));
         comA.send(PrinterASCII.PrintString("找零："+findChange,0));
         comA.send(PrinterASCII.SetAlignment(0));
-        comA.send(PrinterASCII.PrintString("营业员："+SalesTax,0));
+        comA.send(PrinterASCII.PrintString("营业员："+SalesTax,0));*/
         comA.send(PrinterASCII.PrintString("收款："+makeCollections,0));
         comA.send(PrinterASCII.SetAlignment(0));
         comA.send(PrinterASCII.PrintString("支付："+pay,0));
@@ -157,7 +158,80 @@ public class PrinterUtil {
         comA.send(PrinterASCII.PrintString("货号"+"       "+"品名"+"       "+"规格",0));
 
         comA.send(PrinterASCII.SetAlignment(0));
-        comA.send(PrinterASCII.PrintString("单位号："+UnitNumber,0));
+        comA.send(PrinterASCII.PrintString("订单号："+UnitNumber,0));
+        printTest2(NameOfShop,1);
+        try {
+            PrintFeedCutpaper(4);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //测试剧中
+    public void printTest2(List<String> dataCargoNumber,int align,String UnitNumber,String NameOfShop,String DiscountPrice,
+                           String AmountOfBenefit,String AmountAfterDiscount,
+                           String ObviousReceipt,String pay,String makeCollections,String time,String info){
+        //,String SalesTax,String findChange,
+        // String vip,String Integration,String tel,String Address,  ,String info
+        //初始化
+        comA.send(PrinterASCII.SetInitPrintMachine());
+        //字间距
+        comA.send(PrinterASCII.SetWordSpacing(1));
+        //行间距
+        comA.send(PrinterASCII.SetRowSpacing(6));
+
+        printTwoCode(info);
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString(time,0));
+        comA.send(PrinterASCII.SetAlignment(1));
+        /*comA.send(PrinterASCII.PrintString("-----"+"温馨提示，祝您健康"+"-----",0));
+        printTest2("本店地址："+Address,0);
+        //comA.send(PrinterASCII.SetAlignment(0));
+        //comA.send(PrinterASCII.PrintString("本店地址："+Address,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("本店电话："+tel,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("本次积分："+Integration,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("会员号："+vip,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("找零："+findChange,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("营业员："+SalesTax,0));*/
+        comA.send(PrinterASCII.PrintString("收款："+makeCollections,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("支付："+pay,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("已收明细："+ObviousReceipt,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("折后金额："+AmountAfterDiscount,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("优惠金额："+AmountOfBenefit,0));
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("折前金额："+DiscountPrice,0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("----------------------------",0));
+
+
+
+        printTest(dataCargoNumber, align);
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("----------------------------",0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("单价"+"       "+"数量"+"       "+"金额",0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("单位"+"       "+"批号"+"       "+"厂家",0));
+
+        comA.send(PrinterASCII.SetAlignment(1));
+        comA.send(PrinterASCII.PrintString("货号"+"       "+"品名"+"       "+"规格",0));
+
+        comA.send(PrinterASCII.SetAlignment(0));
+        comA.send(PrinterASCII.PrintString("订单号："+UnitNumber,0));
         printTest2(NameOfShop,1);
         try {
             PrintFeedCutpaper(4);
