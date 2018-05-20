@@ -1,6 +1,7 @@
 package com.yanzhenjie.andserver.sample.response;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.yanzhenjie.andserver.RequestHandler;
 import com.yanzhenjie.andserver.sample.ParamsSettingUtil;
@@ -50,11 +51,17 @@ public class RequestShopWhetherTakeHandler implements RequestHandler {
             serialUtilOld = new SerialUtilOld(port,19200,0);
             JSONObject json = new JSONObject();
             serialUtilOld.setData(ParamsSettingUtil.SEND_DATA_SHOP_STATE);
+            Log.d("收到指令：","指令已发送。。");
             byte[][] datas = {serialUtilOld.getDataByte()};
+            Log.d("收到指令：","指令已接收。。");
             String bytesToHexString = serialUtilOld.bytesToHexString(datas[0], datas[0].length);
+            Log.d("收到指令：","截取回复命令。。");
             String order = bytesToHexString.substring(0, bytesToHexString.indexOf("ed"));
+            Log.d("收到指令：","截取字符串。。");
             String str = order + "ed";
+            Log.d("收到指令：",str);
             shipmentStatus = str.substring(26, 28);
+            Log.d("收到指令：",shipmentStatus);
             if("00".equals(shipmentStatus) || "07".equals(shipmentStatus) ){
                 json.put("machineId",machineid);
                 json.put("options",1);
@@ -67,11 +74,12 @@ public class RequestShopWhetherTakeHandler implements RequestHandler {
                 json.put("Msg","货仓有货");
             }else{
                 json.put("machineId",machineid);
-                json.put("options",1);
+                json.put("options",0);
                 json.put("result","success");
                 json.put("Msg","异常");
             }
             String data = json.toString();
+            Log.d("收到指令：",data);
             StringEntity stringEntity = new StringEntity(data,"utf-8");
             response.setEntity(stringEntity);
         } catch (Exception e) {

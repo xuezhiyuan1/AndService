@@ -27,6 +27,7 @@ import com.yanzhenjie.andserver.sample.response.RequestAisleStateHandler;
 import com.yanzhenjie.andserver.sample.response.RequestDoorLockHandler;
 import com.yanzhenjie.andserver.sample.response.RequestDriverMotorStateHandler;
 import com.yanzhenjie.andserver.sample.response.RequestFrontMotorHomingHandler;
+import com.yanzhenjie.andserver.sample.response.RequestImageHandler;
 import com.yanzhenjie.andserver.sample.response.RequestLeftTemperatureController;
 import com.yanzhenjie.andserver.sample.response.RequestMachineStateHandler;
 import com.yanzhenjie.andserver.sample.response.RequestOpenDoorHandler;
@@ -109,6 +110,8 @@ public class CoreService extends Service {
                 .registerHandler("/SaleMachineWebService/RightTemperatureController",new RequestRightTemperatureController())
                 //打印二维码
                 .registerHandler("/SaleMachineWebService/RequestPrintCodeTextHandler",new RequestPrintCodeTextHandler())
+                //图片上传
+                .registerHandler("/SaleMachineWebService/image",new RequestImageHandler())
                 .listener(mListener)
                 .build();
         // Create server.
